@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VoxAging Dataset</title>
+    <title>VoxAging</title>
     <style>
         :root {
             --primary-color: #2c3e50;
@@ -11,7 +11,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 20px;
             background-color: #f8f9fa;
@@ -28,7 +28,7 @@
             padding: 20px;
             background: white;
             border-radius: 10px;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
         }
 
         .stats-grid {
@@ -42,7 +42,7 @@
             background: white;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
         .scroller-container {
@@ -66,7 +66,7 @@
             background: white;
             border-radius: 10px;
             padding: 15px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
         .year-scroller {
@@ -74,6 +74,7 @@
             overflow-x: auto;
             gap: 15px;
             padding: 10px 0;
+            margin-top: 10px;
         }
 
         .year-card {
@@ -81,11 +82,15 @@
             padding: 15px;
             background: #f8f9fa;
             border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
         audio {
             width: 100%;
             margin: 10px 0;
+            border-radius: 5px;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .chart-img {
@@ -97,16 +102,35 @@
             padding: 5px;
         }
 
+        .progress-bar {
+            display: flex;
+            margin-top: 20px;
+            background-color: #eee;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 20px;
+            transition: width 0.3s ease;
+        }
+
         /* 滚动条样式 */
         ::-webkit-scrollbar {
             height: 8px;
         }
+
         ::-webkit-scrollbar-track {
             background: #f1f1f1;
         }
+
         ::-webkit-scrollbar-thumb {
             background: #888;
             border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
         }
     </style>
 </head>
@@ -115,6 +139,7 @@
         <div class="header">
             <h1>VoxAging Dataset</h1>
             <p>A Large-Scale Longitudinal Dataset in English and Mandarin</p>
+            <a href="https://anonymous-site.com" target="_blank">Project Website</a>
         </div>
 
         <div class="stats-grid">
@@ -122,11 +147,15 @@
                 <h3>Total Speakers</h3>
                 <p>293 (226 English / 67 Mandarin)</p>
                 <div class="progress-bar">
-                    <div style="width: 77%">English 77%</div>
-                    <div style="width: 23%">Mandarin 23%</div>
+                    <div class="progress-fill" style="width: 77%; background-color: var(--primary-color);"></div>
+                    <div class="progress-fill" style="width: 23%; background-color: var(--secondary-color);"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-top: 5px;">
+                    <span>English 77%</span>
+                    <span>Mandarin 23%</span>
                 </div>
             </div>
-            
+
             <div class="stat-card">
                 <h3>Gender Distribution</h3>
                 <h4>English Speakers</h4>
@@ -152,22 +181,27 @@
     </div>
 
     <script>
-        // 静态文件路径配置
+        // 设置静态文件路径
         const basePath = 'static/';
         const assets = {
             audio: id => `${basePath}audio/${id}/`,
             images: id => `${basePath}images/${id}/`
         };
 
-        // 模拟数据 - 实际使用时应替换为真实数据
-        const speakers = Array.from({length: 1}, (_, i) => ({
-            id: `speaker_${String(i+1).padStart(3, '0')}`,
-            years: Array.from({length: 10}, (_, y) => ({
-                year: y,
-                audio: `sample_${y}.wav`,
-                chart: `similarity.png`
-            }))
-        }));
+        // 模拟数据
+        const speakers = [
+            {
+                id: "speaker_001",
+                language: "English",
+                years: Array.from({length: 18}, (_, y) => ({
+                    year: y,
+                    audio: `${y}.wav`,
+                    chart: "similarity.png"
+                }))
+            },
+            // 其他说话人可以类似添加
+            // 更多说话人...
+        ];
 
         // 生成说话人卡片
         const scroller = document.getElementById('speakerScroller');
@@ -176,22 +210,40 @@
             const card = document.createElement('div');
             card.className = 'id-card';
             card.innerHTML = `
-                <h4>${speaker.id}</h4>
-                <p>Language: ${speaker.language}</p>
+                <div class="id-header">
+                    <h4>${speaker.id}</h4>
+                    <p>Language: ${speaker.language}</p>
+                </div>
+                <div class="audio-container">
+                    ${speaker.years.map(year => `
+                        <div class="year-card">
+                            <h5>Year ${year.year}</h5>
+                            <audio controls>
+                                <source src="${assets.audio(speaker.id)}${year.audio}" type="audio/wav">
+                            </audio>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="chart-container">
+                    <img class="chart-img" 
+                         src="${assets.images(speaker.id)}${speaker.years[0].chart}" 
+                         alt="${speaker.id} Similarity Chart">
+                </div>
+            `;
+
+            card.querySelector('.audio-container').innerHTML += `
                 <div class="year-scroller">
                     ${speaker.years.map(year => `
                         <div class="year-card">
                             <h5>Year ${year.year}</h5>
                             <audio controls>
-                                <source src="${assets.audio(speaker.id)}${year.audio}" type="audio/mpeg">
+                                <source src="${assets.audio(speaker.id)}${year.audio}" type="audio/wav">
                             </audio>
                         </div>
                     `).join('')}
-                    <img class="chart-img" 
-                      src="${assets.images(speaker.id)}" 
-                      alt="Similarity Chart">
                 </div>
             `;
+
             scroller.appendChild(card);
         });
     </script>
