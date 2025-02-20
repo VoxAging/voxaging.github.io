@@ -161,13 +161,12 @@
         };
 
         // 模拟数据 - 实际使用时应替换为真实数据
-        const speakers = Array.from({length: 10}, (_, i) => ({
+        const speakers = Array.from({length: 1}, (_, i) => ({
             id: `speaker_${String(i+1).padStart(3, '0')}`,
-            language: i < 7 ? 'English' : 'Mandarin',
-            years: Array.from({length: 5}, (_, y) => ({
-                year: 2005 + y,
-                audio: `sample_${y+1}.mp3`,
-                chart: `similarity_${y+1}.png`
+            years: Array.from({length: 10}, (_, y) => ({
+                year: y,
+                audio: `sample_${y}.wav`,
+                chart: `similarity.png`
             }))
         }));
 
