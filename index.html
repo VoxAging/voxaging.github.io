@@ -231,18 +231,18 @@
                 </div>
             `;
 
-            card.querySelector('.audio-container').innerHTML += `
-                <div class="year-scroller">
-                    ${speaker.years.map(year => `
-                        <div class="year-card">
-                            <h5>Year ${year.year}</h5>
-                            <audio controls>
-                                <source src="${assets.audio(speaker.id)}${year.audio}" type="audio/wav">
-                            </audio>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
+            // card.querySelector('.audio-container').innerHTML += `
+            //     <div class="year-scroller">
+            //         ${speaker.years.map(year => `
+            //             <div class="year-card">
+            //                 <h5>Year ${year.year}</h5>
+            //                 <audio controls>
+            //                     <source src="${assets.audio(speaker.id)}${year.audio}" type="audio/wav">
+            //                 </audio>
+            //             </div>
+            //         `).join('')}
+            //     </div>
+            // `;
 
             scroller.appendChild(card);
         });
