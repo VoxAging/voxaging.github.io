@@ -115,7 +115,6 @@
         <div class="header">
             <h1>VoxAging Dataset</h1>
             <p>A Large-Scale Longitudinal Dataset in English and Mandarin</p>
-            <a href="https://anonymous-site.com" target="_blank">Project Website</a>
         </div>
 
         <div class="stats-grid">
@@ -186,11 +185,11 @@
                             <audio controls>
                                 <source src="${assets.audio(speaker.id)}${year.audio}" type="audio/mpeg">
                             </audio>
-                            <img class="chart-img" 
-                                 src="${assets.images(speaker.id)}${year.chart}" 
-                                 alt="Similarity Chart ${year.year}">
                         </div>
                     `).join('')}
+                    <img class="chart-img" 
+                      src="${assets.images(speaker.id)}${year.chart}" 
+                      alt="Similarity Chart">
                 </div>
             `;
             scroller.appendChild(card);
